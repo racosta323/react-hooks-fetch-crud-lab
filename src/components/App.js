@@ -4,7 +4,7 @@ import QuestionList from "./QuestionList";
 import { useState, useEffect } from "react";
 
 function App() {
-  const [page, setPage] = useState("List");
+  const [page, setPage] = useState("");
 
  
   function handleChange(event) {
@@ -36,9 +36,7 @@ function App() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData.answer1);
-
-
+  
     const jsonBody = {
       "prompt": formData.prompt,
       "answers": [
@@ -74,11 +72,56 @@ function App() {
 
   }
   
+function handleDelete(event){
+  const id = Number(event.target.value)
+  const updatedItems = questions.filter((question) => {
+      if(question.id !== id) return true; 
+    } 
+  )
+
+  fetch(`http://localhost:4000/questions/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(resp=>resp.json())
+  .then(data=>{
+    console.log(data)
+    setQuestions(updatedItems)
+    })
+}
+
+function handleInputChange(event){
+  const handleId = Number(event.target.value)
+  console.log(typeof handleId)
+
+  fetch(`http://localhost:4000/questions/${handleId}`, {
+    method: "PATCH",
+    headers: 
+    {
+      "Content-Type": "application/json"
+    },
+    body: 
+    {
+      "correctIndex": handleId
+    }
+  })
+  .then(resp=>resp.json())
+  .then(data=>console.log(data))
+
+}
+
 
   return (
     <main>
       <AdminNavBar onChangePage={setPage} />
-      {page === "Form" ? <QuestionForm handleChange={handleChange} formData={formData} handleSubmit={handleSubmit}/> : <QuestionList questions={questions}/>}
+      {page === "Form" ? 
+      <QuestionForm 
+        handleChange={handleChange} 
+        formData={formData}
+        handleSubmit={handleSubmit} 
+      /> : <QuestionList questions={questions} handleDelete={handleDelete} handleInputChange={handleInputChange}/>}
     </main>
   );
 }

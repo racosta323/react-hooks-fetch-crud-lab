@@ -3,10 +3,10 @@ import QuestionItem from "./QuestionItem";
 
 
 
-function QuestionList({handleChange, questions}) {
+function QuestionList({handleChange, questions, handleDelete, handleInputChange}) {
 
   const question = questions.map(each=>{
-    return <QuestionItem key={each.id} question={each} handleChange={handleChange}/>
+    return <QuestionItem key={each.id} question={each} handleChange={handleChange} handleDelete={handleDelete} handleInputChange={handleInputChange}/>
     }
   )
 
