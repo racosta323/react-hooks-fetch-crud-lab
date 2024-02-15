@@ -1,10 +1,11 @@
 import React from "react";
 
 function QuestionItem({ question }) {
-  console.log(question)
+ 
   const { id, prompt, answers, correctIndex } = question;
-  console.log(id, prompt)
 
+  console.log(answers)
+  
   const options = answers.map((answer, index) => (
     <option key={index} value={index}>
       {answer}
