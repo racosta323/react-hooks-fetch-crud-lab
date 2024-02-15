@@ -3,8 +3,7 @@ import QuestionItem from "./QuestionItem";
 
 import { useState, useEffect } from "react";
 
-function QuestionList() {
-
+function QuestionList({handleChange}) {
 
 const [questions, setQuestions] = useState([])
 
@@ -14,14 +13,19 @@ useEffect(()=>{
   .then(data => setQuestions(data))
 },[])
 
-const question = questions.at(question=>question)
+const question = questions.map(question=>{
+  return <QuestionItem key={question.id} question={question} handleChange={handleChange}/>
+  }
+)
+console.log(question)
+
 
 
   return (
     <section>
       <h1>Quiz Questions</h1>
       <ul>
-        <QuestionItem question ={question}/>
+        { question }
       </ul>
     </section>
   );
