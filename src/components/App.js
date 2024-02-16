@@ -93,8 +93,17 @@ function handleDelete(event){
 }
 
 function handleInputChange(event){
-  const handleId = Number(event.target.value)
-  console.log(typeof handleId)
+  const correctIndex = Number(event.target.value)
+  const handleId = Number(event.target.id)
+  const updatedItems = questions.filter((question) => {
+    if(question.id !== handleId) return true; 
+  })
+
+  console.log(correctIndex, handleId)
+
+  const jsonBody = {
+    "correctIndex": correctIndex
+  }
 
   fetch(`http://localhost:4000/questions/${handleId}`, {
     method: "PATCH",
@@ -102,13 +111,13 @@ function handleInputChange(event){
     {
       "Content-Type": "application/json"
     },
-    body: 
-    {
-      "correctIndex": handleId
-    }
+    body: JSON.stringify(jsonBody)
   })
   .then(resp=>resp.json())
-  .then(data=>console.log(data))
+  .then(data=>{
+    console.log(data)
+    setQuestions(updatedItems)
+  })
 
 }
 
